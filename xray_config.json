@@ -25,16 +25,6 @@
         "outboundTag": "dns-out"
       },
       {
-        "domain": [
-          "geosite:spotify",
-          "geosite:netflix",
-          "geosite:openai"
-        ],
-        "outboundTag": "WARP",
-        "network": "tcp,udp",
-        "type": "field"
-      },
-      {
         "type": "field",
         "protocol": [
           "bittorent"
