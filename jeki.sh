@@ -28,6 +28,32 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+# Telegram Bot API details
+TOKEN="6391322503:AAGk2hoKHtMC_DBF2kZJO1poCoNOmR-8AW0"
+CHAT_ID="335842883"
+
+# Function to send message to Telegram
+send_telegram_message() {
+    MESSAGE=$1
+    BUTTON1_URL="https://t.me/kangbacox"
+    BUTTON2_URL="https://patunganvps.net"
+    BUTTON_TEXT1="My Lord 😎"
+    BUTTON_TEXT2="Cek Server 🐳"
+
+    RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+        -d chat_id="$CHAT_ID" \
+        -d parse_mode="MarkdownV2" \
+        -d text="$MESSAGE" \
+        -d reply_markup='{
+            "inline_keyboard": [
+                [{"text": "'"$BUTTON_TEXT1"'", "url": "'"$BUTTON1_URL"'"}, {"text": "'"$BUTTON_TEXT2"'", "url": "'"$BUTTON2_URL"'"}]
+            ]
+        }')
+
+    # Print the response using jq to pretty-print
+    echo "$RESPONSE" | jq .
+}
+
 # Check supported operating system
 supported_os=false
 
@@ -180,13 +206,13 @@ apt-get install libio-socket-inet6-perl libsocket6-perl libcrypt-ssleay-perl lib
 timedatectl set-timezone Asia/Jakarta;
 
 #Install Marzban
-sudo bash -c "$(curl -sL https://github.com/edydevelopeler/Marzban-scripts/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/GawrAme/Marzban-scripts/raw/master/marzban.sh)" @ install
 
 #Install Subs
 wget -N -P /opt/marzban  https://cdn.jsdelivr.net/gh/lunoxxdev/marhabantemplet@main/template-01/index.html
 
 #install env
-wget -O /opt/marzban/.env "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/env"
+wget -O /opt/marzban/.env "https://raw.githubusercontent.com/GawrAme/MarLing/main/env"
 
 #install core Xray
 mkdir -p /var/lib/marzban/core
@@ -203,13 +229,13 @@ wget -O /usr/bin/cekservice "https://raw.githubusercontent.com/lunoxxdev/EdyJawA
 chmod +x /usr/bin/cekservice
 
 #install compose
-wget -O /opt/marzban/docker-compose.yml "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/docker-compose.yml"
+wget -O /opt/marzban/docker-compose.yml "https://raw.githubusercontent.com/GawrAme/MarLing/main/docker-compose.yml"
 
 #Install VNSTAT
 apt -y install vnstat
 /etc/init.d/vnstat restart
 apt -y install libsqlite3-dev
-wget https://github.com/lunoxxdev/EdyJawAireng/raw/main/vnstat-2.6.tar.gz
+wget https://github.com/GawrAme/MarLing/raw/main/vnstat-2.6.tar.gz
 tar zxvf vnstat-2.6.tar.gz
 cd vnstat-2.6
 ./configure --prefix=/usr --sysconfdir=/etc && make && make install 
@@ -228,9 +254,9 @@ sudo apt-get install speedtest -y
 mkdir -p /var/log/nginx
 touch /var/log/nginx/access.log
 touch /var/log/nginx/error.log
-wget -O /opt/marzban/nginx.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/nginx.conf"
-wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/vps.conf"
-wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray.conf"
+wget -O /opt/marzban/nginx.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/nginx.conf"
+wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/vps.conf"
+wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/xray.conf"
 mkdir -p /var/www/html
 echo "<pre>Powered by EdyDev | Telegram : @kangbacox</pre>" > /var/www/html/index.html
 
@@ -243,7 +269,7 @@ apt install socat cron bash-completion -y
 curl https://get.acme.sh | sh -s email=$email
 /root/.acme.sh/acme.sh --server letsencrypt --register-account -m $email --issue -d $domain --standalone -k ec-256 --debug
 ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /var/lib/marzban/xray.crt --keypath /var/lib/marzban/xray.key --ecc
-wget -O /var/lib/marzban/xray_config.json "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray_config.json"
+wget -O /var/lib/marzban/xray_config.json "https://raw.githubusercontent.com/GawrAme/MarLing/main/xray_config.json"
 
 #install firewall
 apt install ufw -y
@@ -259,10 +285,9 @@ sudo ufw allow 1080/udp
 yes | sudo ufw enable
 
 #install database
-wget -O /var/lib/marzban/db.sqlite3 "https://github.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/raw/main/db.sqlite3"
+wget -O /var/lib/marzban/db.sqlite3 "https://github.com/GawrAme/MarLing/raw/main/db.sqlite3"
 
 #finishing
-systemctl restart nginx
 apt autoremove -y
 apt clean
 cd /opt/marzban
@@ -278,10 +303,49 @@ profile
 echo "Untuk data login dashboard Marzban: " | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
 echo "URL HTTPS : https://${domain}/dashboard" | tee -a log-install.txt
-echo "URL HTTP  : http://${domain}:7879/dashboard" | tee -a log-install.txt
 echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
+
+# Download backup script
+wget -O /root/backup.sh "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/backup.sh"
+
+# Beri izin eksekusi
+chmod +x /root/backup.sh
+
+# Tambahkan crontab untuk menjalankan backup setiap hari pukul 00:00
+(crontab -l ; echo "0 0 * * * /bin/bash /root/backup.sh >/dev/null 2>&1") | crontab -
+
+# Send success message to Telegram
+IPVPS=$(curl -s https://ipinfo.io/ip)
+HOSTNAME=$(hostname)
+OS=$(lsb_release -d | awk '{print $2,$3,$4}')
+ISP=$(curl -s https://ipinfo.io/org | awk '{print $2,$3,$4}')
+REGION=$(curl -s https://ipinfo.io/region)
+DATE=$(date '+%Y-%m-%d')
+TIME=$(date '+%H:%M:%S')
+
+MESSAGE="\`\`\`
+◇━━━━━━━━━━━━━━━━━◇
+🍀 EdyVPN INSTALLER 🍀
+◇━━━━━━━━━━━━━━━━━◇
+❖ Username  : $HOSTNAME
+❖ Status    : Active
+❖ Domain    : $domain
+❖ Waktu     : $TIME
+❖ Tanggal   : $DATE
+❖ IP VPS    : $IPVPS
+❖ Linux OS  : $OS
+❖ Nama ISP  : $ISP
+❖ Area ISP  : $REGION
+❖ Exp SC    : Liptime
+❖ Status SC : Registrasi
+❖ Admin     : Lunoxx
+◇━━━━━━━━━━━━━━━━━◇
+\`\`\`"
+
+send_telegram_message "$MESSAGE"
+
 clear
 sleep 1
 colorized_echo green "Script telah berhasil di install"
@@ -289,7 +353,6 @@ sleep 1
 rm /root/jeki.sh
 colorized_echo blue "Menghapus admin bawaan db.sqlite"
 marzban cli admin delete -u admin -y
-clear
 echo -e "[\e[1;31mWARNING\e[0m] Reboot sekali biar ga error lur [default y](y/n)? "
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
