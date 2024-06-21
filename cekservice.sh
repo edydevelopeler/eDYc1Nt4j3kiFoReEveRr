@@ -43,7 +43,7 @@ echo -e "❇️ Nginx                :$NGINX"
 echo -e "❇️ Firewall             :$UFW"
 echo -e "❇️ Marzban Panel        :$MARZ"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo -e "SESEPUH PINISEPUH LORD EDY MANA TAHAN EDY MMPSSHHHH AHHHHH"
+echo -e "EDY COCOL AKU DONG AHHHH MMMMMPPPPSSSSSSHHHHH AHHHHH"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
 echo ""
 
