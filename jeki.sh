@@ -28,32 +28,6 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-# Telegram Bot API details
-TOKEN="6391322503:AAGk2hoKHtMC_DBF2kZJO1poCoNOmR-8AW0"
-CHAT_ID="335842883"
-
-# Function to send message to Telegram
-send_telegram_message() {
-    MESSAGE=$1
-    BUTTON1_URL="https://t.me/kangbacox"
-    BUTTON2_URL="https://patunganvps.net"
-    BUTTON_TEXT1="My Lord 😎"
-    BUTTON_TEXT2="Cek Server 🐳"
-
-    RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
-        -d chat_id="$CHAT_ID" \
-        -d parse_mode="MarkdownV2" \
-        -d text="$MESSAGE" \
-        -d reply_markup='{
-            "inline_keyboard": [
-                [{"text": "'"$BUTTON_TEXT1"'", "url": "'"$BUTTON1_URL"'"}, {"text": "'"$BUTTON_TEXT2"'", "url": "'"$BUTTON2_URL"'"}]
-            ]
-        }')
-
-    # Print the response using jq to pretty-print
-    echo "$RESPONSE" | jq .
-}
-
 # Check supported operating system
 supported_os=false
 
@@ -209,23 +183,23 @@ timedatectl set-timezone Asia/Jakarta;
 sudo bash -c "$(curl -sL https://github.com/GawrAme/Marzban-scripts/raw/master/marzban.sh)" @ install
 
 #Install Subs
-wget -N -P /opt/marzban  https://cdn.jsdelivr.net/gh/lunoxxdev/marhabantemplet@main/template-01/index.html
+wget -N -P /var/lib/marzban/templates/subscription/  https://raw.githubusercontent.com/GawrAme/MarLing/main/index.html
 
 #install env
 wget -O /opt/marzban/.env "https://raw.githubusercontent.com/GawrAme/MarLing/main/env"
 
 #install core Xray
 mkdir -p /var/lib/marzban/core
-wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.16/Xray-linux-64.zip"  
+wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.10/Xray-linux-64.zip"  
 cd /var/lib/marzban/core && unzip xray.zip && chmod +x xray
 cd
 
 #profile
 echo -e 'profile' >> /root/.profile
-wget -O /usr/bin/profile "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/profile";
+wget -O /usr/bin/profile "https://raw.githubusercontent.com/GawrAme/MarLing/main/profile";
 chmod +x /usr/bin/profile
 apt install neofetch -y
-wget -O /usr/bin/cekservice "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/cekservice.sh"
+wget -O /usr/bin/cekservice "https://raw.githubusercontent.com/GawrAme/MarLing/main/cekservice.sh"
 chmod +x /usr/bin/cekservice
 
 #install compose
@@ -258,7 +232,7 @@ wget -O /opt/marzban/nginx.conf "https://raw.githubusercontent.com/GawrAme/MarLi
 wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/vps.conf"
 wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/xray.conf"
 mkdir -p /var/www/html
-echo "<pre>Powered by EdyDev | Telegram : @kangbacox</pre>" > /var/www/html/index.html
+echo "<pre>Setup by AutoScript LingVPN</pre>" > /var/www/html/index.html
 
 #install socat
 apt install iptables -y
@@ -303,53 +277,11 @@ profile
 echo "Untuk data login dashboard Marzban: " | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
 echo "URL HTTPS : https://${domain}/dashboard" | tee -a log-install.txt
+echo "URL HTTP  : http://${domain}:7879/dashboard" | tee -a log-install.txt
 echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
-
-# Download backup script
-wget -O /root/backup.sh "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/backup.sh"
-
-# Beri izin eksekusi
-chmod +x /root/backup.sh
-
-# Tambahkan crontab untuk menjalankan backup setiap hari pukul 00:00
-(crontab -l ; echo "0 0 * * * /bin/bash /root/backup.sh >/dev/null 2>&1") | crontab -
-
-# Send success message to Telegram
-IPVPS=$(curl -s https://ipinfo.io/ip)
-HOSTNAME=$(hostname)
-OS=$(lsb_release -d | awk '{print $2,$3,$4}')
-ISP=$(curl -s https://ipinfo.io/org | awk '{print $2,$3,$4}')
-REGION=$(curl -s https://ipinfo.io/region)
-DATE=$(date '+%Y-%m-%d')
-TIME=$(date '+%H:%M:%S')
-
-MESSAGE="\`\`\`
-◇━━━━━━━━━━━━━━━━━◇
-🍀 EdyVPN INSTALLER 🍀
-◇━━━━━━━━━━━━━━━━━◇
-❖ Username  : $HOSTNAME
-❖ Status    : Active
-❖ Domain    : $domain
-❖ Waktu     : $TIME
-❖ Tanggal   : $DATE
-❖ IP VPS    : $IPVPS
-❖ Linux OS  : $OS
-❖ Nama ISP  : $ISP
-❖ Area ISP  : $REGION
-❖ Exp SC    : Liptime
-❖ Status SC : Registrasi
-❖ Admin     : Lunoxx
-◇━━━━━━━━━━━━━━━━━◇
-\`\`\`"
-
-send_telegram_message "$MESSAGE"
-
-clear
-sleep 1
 colorized_echo green "Script telah berhasil di install"
-sleep 1
 rm /root/jeki.sh
 colorized_echo blue "Menghapus admin bawaan db.sqlite"
 marzban cli admin delete -u admin -y
