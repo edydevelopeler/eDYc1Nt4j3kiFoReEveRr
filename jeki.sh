@@ -24,7 +24,7 @@ colorized_echo() {
 
 # Telegram Bot API details
 TOKEN="6391322503:AAGk2hoKHtMC_DBF2kZJO1poCoNOmR-8AW0"
-CHAT_ID="335842883"
+CHAT_ID="-1001843171201"
 
 # Function to send message to Telegram
 send_telegram_message() {
@@ -308,6 +308,7 @@ echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
 clear
+sleep 2
 
 # Download backup script
 wget -O /root/backup.sh "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/backup.sh"
