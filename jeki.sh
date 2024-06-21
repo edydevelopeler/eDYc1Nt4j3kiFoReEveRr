@@ -22,32 +22,6 @@ colorized_echo() {
     esac
 }
 
-# Telegram Bot API details
-TOKEN="6391322503:AAGk2hoKHtMC_DBF2kZJO1poCoNOmR-8AW0"
-CHAT_ID="335842883"
-
-# Function to send message to Telegram
-send_telegram_message() {
-    MESSAGE=$1
-    BUTTON1_URL="https://t.me/kangbacox"
-    BUTTON2_URL="https://patunganvps.net"
-    BUTTON_TEXT1="My Lord 😎"
-    BUTTON_TEXT2="Cek Server 🐳"
-
-    RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
-        -d chat_id="$CHAT_ID" \
-        -d parse_mode="MarkdownV2" \
-        -d text="$MESSAGE" \
-        -d reply_markup='{
-            "inline_keyboard": [
-                [{"text": "'"$BUTTON_TEXT1"'", "url": "'"$BUTTON1_URL"'"}, {"text": "'"$BUTTON_TEXT2"'", "url": "'"$BUTTON2_URL"'"}]
-            ]
-        }')
-
-    # Print the response using jq to pretty-print
-    echo "$RESPONSE" | jq .
-}
-
 # Check if the script is run as root
 if [ "$(id -u)" != "0" ]; then
     colorized_echo red "Error: Skrip ini harus dijalankan sebagai root."
@@ -100,7 +74,7 @@ if [[ "$COUNTRY_CODE" == "ID" ]]; then
     colorized_echo green "IP Indonesia terdeteksi, menggunakan repositories lokal Indonesia"
 
     # Menanyakan kepada pengguna apakah ingin menggunakan repo lokal atau repo default
-    read -p "Apakah Anda ingin menggunakan Repo lokal Indonesia? (y/n): " use_local_repo
+    read -p "Apakah Anda ingin menggunakan repo lokal Indonesia? (y/n): " use_local_repo
 
     if [[ "$use_local_repo" == "y" || "$use_local_repo" == "Y" ]]; then
         # Pemeriksaan OS untuk menambahkan repo yang sesuai
@@ -145,7 +119,7 @@ read -rp "Masukkan Email anda: " email
 
 #username
 while true; do
-    read -rp "Masukkan Username Panel (hanya huruf dan angka): " userpanel
+    read -rp "Masukkan UsernamePanel (hanya huruf dan angka): " userpanel
 
     # Memeriksa apakah userpanel hanya mengandung huruf dan angka
     if [[ ! "$userpanel" =~ ^[A-Za-z0-9]+$ ]]; then
@@ -165,7 +139,6 @@ echo "$passpanel" > /etc/data/passpanel
 clear
 cd;
 apt-get update;
-apt-get install jq;
 
 #Remove unused Module
 apt-get -y --purge remove samba*;
@@ -207,36 +180,36 @@ apt-get install libio-socket-inet6-perl libsocket6-perl libcrypt-ssleay-perl lib
 timedatectl set-timezone Asia/Jakarta;
 
 #Install Marzban
-sudo bash -c "$(curl -sL https://github.com/lunoxxdev/Marzban-scripts/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/GawrAme/Marzban-scripts/raw/master/marzban.sh)" @ install
 
-# Install Subs
-wget -N -P /opt/marzban  https://cdn.jsdelivr.net/gh/lunoxxdev/marhabantemplet@main/template-01/index.html
+#Install Subs
+wget -N -P /var/lib/marzban/templates/subscription/  https://raw.githubusercontent.com/GawrAme/MarLing/main/index.html
 
 #install env
-wget -O /opt/marzban/.env "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/env"
+wget -O /opt/marzban/.env "https://raw.githubusercontent.com/GawrAme/MarLing/main/env"
 
 #install core Xray
 mkdir -p /var/lib/marzban/core
-wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.16/Xray-linux-64.zip"  
+wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.10/Xray-linux-64.zip"  
 cd /var/lib/marzban/core && unzip xray.zip && chmod +x xray
 cd
 
-# Profile
+#profile
 echo -e 'profile' >> /root/.profile
-wget -O /usr/bin/profile "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/profile";
+wget -O /usr/bin/profile "https://raw.githubusercontent.com/GawrAme/MarLing/main/profile";
 chmod +x /usr/bin/profile
 apt install neofetch -y
-wget -O /usr/bin/cekservice "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/cekservice.sh"
+wget -O /usr/bin/cekservice "https://raw.githubusercontent.com/GawrAme/MarLing/main/cekservice.sh"
 chmod +x /usr/bin/cekservice
 
 #install compose
-wget -O /opt/marzban/docker-compose.yml "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/docker-compose.yml"
+wget -O /opt/marzban/docker-compose.yml "https://raw.githubusercontent.com/GawrAme/MarLing/main/docker-compose.yml"
 
-# Install VNSTAT
+#Install VNSTAT
 apt -y install vnstat
 /etc/init.d/vnstat restart
 apt -y install libsqlite3-dev
-wget https://github.com/lunoxxdev/EdyJawAireng/raw/main/vnstat-2.6.tar.gz
+wget https://github.com/GawrAme/MarLing/raw/main/vnstat-2.6.tar.gz
 tar zxvf vnstat-2.6.tar.gz
 cd vnstat-2.6
 ./configure --prefix=/usr --sysconfdir=/etc && make && make install 
@@ -255,12 +228,11 @@ sudo apt-get install speedtest -y
 mkdir -p /var/log/nginx
 touch /var/log/nginx/access.log
 touch /var/log/nginx/error.log
-wget -O /opt/marzban/nginx.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/nginx.conf"
-wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/vps.conf"
-wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray.conf"
-systemctl restart nginx
+wget -O /opt/marzban/nginx.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/nginx.conf"
+wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/vps.conf"
+wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/GawrAme/MarLing/main/xray.conf"
 mkdir -p /var/www/html
-echo "<pre>Powered by EdyDev | Telegram : @kangbacox</pre>" > /var/www/html/index.html
+echo "<pre>Setup by AutoScript LingVPN</pre>" > /var/www/html/index.html
 
 #install socat
 apt install iptables -y
@@ -271,7 +243,7 @@ apt install socat cron bash-completion -y
 curl https://get.acme.sh | sh -s email=$email
 /root/.acme.sh/acme.sh --server letsencrypt --register-account -m $email --issue -d $domain --standalone -k ec-256 --debug
 ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /var/lib/marzban/xray.crt --keypath /var/lib/marzban/xray.key --ecc
-wget -O /var/lib/marzban/xray_config.json "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray_config.json"
+wget -O /var/lib/marzban/xray_config.json "https://raw.githubusercontent.com/GawrAme/MarLing/main/xray_config.json"
 
 #install firewall
 apt install ufw -y
@@ -287,9 +259,10 @@ sudo ufw allow 1080/udp
 yes | sudo ufw enable
 
 #install database
-wget -O /var/lib/marzban/db.sqlite3 "https://github.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/raw/main/db.sqlite3"
+wget -O /var/lib/marzban/db.sqlite3 "https://github.com/GawrAme/MarLing/raw/main/db.sqlite3"
 
 #finishing
+systemctl restart nginx
 apt autoremove -y
 apt clean
 cd /opt/marzban
@@ -309,54 +282,15 @@ echo "URL HTTP  : http://${domain}:7879/dashboard" | tee -a log-install.txt
 echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
-
-# Download backup script
-wget -O /root/backup.sh "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/backup.sh"
-
-# Beri izin eksekusi
-chmod +x /root/backup.sh
-
-# Tambahkan crontab untuk menjalankan backup setiap hari pukul 00:00
-(crontab -l ; echo "0 0 * * * /bin/bash /root/backup.sh >/dev/null 2>&1") | crontab -
-
-# Send success message to Telegram
-IPVPS=$(curl -s https://ipinfo.io/ip)
-HOSTNAME=$(hostname)
-OS=$(lsb_release -d | awk '{print $2,$3,$4}')
-ISP=$(curl -s https://ipinfo.io/org | awk '{print $2,$3,$4}')
-REGION=$(curl -s https://ipinfo.io/region)
-DATE=$(date '+%Y-%m-%d')
-TIME=$(date '+%H:%M:%S')
-
-MESSAGE="\`\`\`
-◇━━━━━━━━━━━━━━━━━◇
-🍀 EdyVPN AUTOINSTALLER 🍀
-◇━━━━━━━━━━━━━━━━━◇
-❖ Username  : $HOSTNAME
-❖ Status    : Active
-❖ Domain    : $domain
-❖ Waktu     : $TIME
-❖ Tanggal   : $DATE
-❖ IP VPS    : $IPVPS
-❖ Linux OS  : $OS
-❖ Nama ISP  : $ISP
-❖ Area ISP  : $REGION
-❖ Exp SC    : Liptime
-❖ Status SC : Registrasi
-❖ Admin     : Lunoxx
-◇━━━━━━━━━━━━━━━━━◇
-\`\`\`"
-
-send_telegram_message "$MESSAGE"
-
-clear
-sleep 1
+echo "Jangan lupa join Channel & Grup Telegram saya juga di" | tee -a log-install.txt
+echo "Telegram Channel: https://t.me/LingVPN" | tee -a log-install.txt
+echo "Telegram Group: https://t.me/LingVPN_Group" | tee -a log-install.txt
+echo "-=================================-" | tee -a log-install.txt
 colorized_echo green "Script telah berhasil di install"
-sleep 1
-rm /root/jeki.sh
+rm /root/mar.sh
 colorized_echo blue "Menghapus admin bawaan db.sqlite"
 marzban cli admin delete -u admin -y
-echo -e "[\e[1;31mWARNING\e[0m] Reboot sekali biar ga error cok [default y](y/n)? "
+echo -e "[\e[1;31mWARNING\e[0m] Reboot sekali biar ga error lur [default y](y/n)? "
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
