@@ -355,7 +355,7 @@ sleep 1
 rm /root/jeki.sh
 colorized_echo blue "Menghapus admin bawaan db.sqlite"
 marzban cli admin delete -u admin -y
-echo -e "[\e[1;31mWARNING\e[0m] Reboot sekali biar ga error lur [default y](y/n)? "
+echo -e "[\e[1;31mWARNING\e[0m] Reboot sekali biar ga error cok [default y](y/n)? "
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
