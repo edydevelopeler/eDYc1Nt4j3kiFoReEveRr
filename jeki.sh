@@ -260,6 +260,7 @@ wget -O /opt/marzban/default.conf "https://raw.githubusercontent.com/edydevelope
 wget -O /opt/marzban/xray.conf "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray.conf"
 mkdir -p /var/www/html
 echo "<pre>Powered by EdyDev | Telegram : @kangbacox</pre>" > /var/www/html/index.html
+systemctl start nginx
 
 #install socat
 apt install iptables -y
@@ -267,9 +268,11 @@ apt install curl socat xz-utils wget apt-transport-https gnupg gnupg2 gnupg1 dns
 apt install socat cron bash-completion -y
 
 #install cert
+systemctl stop nginx
 curl https://get.acme.sh | sh -s email=$email
 /root/.acme.sh/acme.sh --server letsencrypt --register-account -m $email --issue -d $domain --standalone -k ec-256 --debug
 ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /var/lib/marzban/xray.crt --keypath /var/lib/marzban/xray.key --ecc
+systemctl start nginx
 wget -O /var/lib/marzban/xray_config.json "https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/xray_config.json"
 
 #install firewall
