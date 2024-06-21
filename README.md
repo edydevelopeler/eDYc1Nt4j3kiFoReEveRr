@@ -1,4 +1,4 @@
-# MarLing
+# EdyCintaJekiForever
 
 Ini adalah [Marzban](https://github.com/Gozargah/Marzban) yang sudah saya tambahkan nginx untuk konfigurasi koneksi WebSocket, HTTP Upgrade dan gRPC single port. </br>
 WebSocket sudah support untuk 443 TLS, 80 HTTP dan Wildcard path, contoh /enter-your-custom-path/trojan </br>
@@ -9,8 +9,7 @@ Credit aplikasi full to [Gozargah Marzban](https://github.com/Gozargah), saya ha
 
 # Special Thanks to
 - [Gozargah](https://github.com/Gozargah/Marzban)
-- [hamid-gh98](https://github.com/hamid-gh98)
-- [x0sina](https://github.com/x0sina/marzban-sub)
+- [MuhammadAshouri](https://github.com/MuhammadAshouri )
 
 # List Protocol yang support
 - VLess
@@ -32,9 +31,12 @@ Credit aplikasi full to [Gozargah Marzban](https://github.com/Gozargah), saya ha
  ```
 Pastikan anda sudah login sebagai root sebelum menjalankan perintah dibawah
  ```html
- wget https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/jeki.sh && chmod +x jeki.sh && ./jeki.sh
+ apt install tmux -y && wget https://raw.githubusercontent.com/edydevelopeler/eDYc1Nt4j3kiFoReEveRr/main/jeki.sh && chmod +x jeki.sh && tmux new-session -d -s jekijawa './jeki.sh' && tmux attach -t jekijawa
  ```
-
+Jika koneksi terputus, hubungkan kembali ke sesi
+ ```html
+tmux attach -t jekijawa
+ ```
 Buka panel Marzban dengan mengunjungi https://domainmu/dashboard <br>
 
 Jika ingin mengubah konfigurasi env variable 
