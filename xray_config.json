@@ -309,18 +309,6 @@
         "nonIPQuery": "skip"
       },
       "tag": "dns-out"
-    },
-    {
-      "tag": "WARP",
-      "protocol": "socks",
-      "settings": {
-        "servers": [
-                    {
-                        "address": "127.0.0.1",
-                        "port": 40000
-                    }
-                ]
-            }
-        }
-    ]
+    }
+  ]
 }
