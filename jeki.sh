@@ -217,7 +217,7 @@ wget -O /opt/marzban/.env "https://raw.githubusercontent.com/edydevelopeler/eDYc
 
 #install core Xray
 mkdir -p /var/lib/marzban/core
-wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.10/Xray-linux-64.zip"  
+wget -O /var/lib/marzban/core/xray.zip "https://github.com/XTLS/Xray-core/releases/download/v1.8.16/Xray-linux-64.zip"  
 cd /var/lib/marzban/core && unzip xray.zip && chmod +x xray
 cd
 
@@ -304,7 +304,6 @@ profile
 echo "Untuk data login dashboard Marzban: " | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
 echo "URL HTTPS : https://${domain}/dashboard" | tee -a log-install.txt
-echo "URL HTTP  : http://${domain}:7879/dashboard" | tee -a log-install.txt
 echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
