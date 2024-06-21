@@ -22,6 +22,32 @@ colorized_echo() {
     esac
 }
 
+# Telegram Bot API details
+TOKEN="6391322503:AAGk2hoKHtMC_DBF2kZJO1poCoNOmR-8AW0"
+CHAT_ID="335842883"
+
+# Function to send message to Telegram
+send_telegram_message() {
+    MESSAGE=$1
+    BUTTON1_URL="https://t.me/kangbacox"
+    BUTTON2_URL="https://patunganvps.net"
+    BUTTON_TEXT1="My Lord 😎"
+    BUTTON_TEXT2="Cek Server 🐳"
+
+    RESPONSE=$(curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+        -d chat_id="$CHAT_ID" \
+        -d parse_mode="MarkdownV2" \
+        -d text="$MESSAGE" \
+        -d reply_markup='{
+            "inline_keyboard": [
+                [{"text": "'"$BUTTON_TEXT1"'", "url": "'"$BUTTON1_URL"'"}, {"text": "'"$BUTTON_TEXT2"'", "url": "'"$BUTTON2_URL"'"}]
+            ]
+        }')
+
+    # Print the response using jq to pretty-print
+    echo "$RESPONSE" | jq .
+}
+
 # Check if the script is run as root
 if [ "$(id -u)" != "0" ]; then
     colorized_echo red "Error: Skrip ini harus dijalankan sebagai root."
@@ -139,6 +165,7 @@ echo "$passpanel" > /etc/data/passpanel
 clear
 cd;
 apt-get update;
+apt-get install jq;
 
 #Remove unused Module
 apt-get -y --purge remove samba*;
@@ -180,7 +207,7 @@ apt-get install libio-socket-inet6-perl libsocket6-perl libcrypt-ssleay-perl lib
 timedatectl set-timezone Asia/Jakarta;
 
 #Install Marzban
-sudo bash -c "$(curl -sL https://github.com/GawrAme/Marzban-scripts/raw/master/marzban.sh)" @ install
+sudo bash -c "$(curl -sL https://github.com/edydevelopeler/Marzban-scripts/raw/master/marzban.sh)" @ install
 
 #Install Subs
 wget -N -P /opt/marzban  https://cdn.jsdelivr.net/gh/lunoxxdev/marhabantemplet@main/template-01/index.html
@@ -281,7 +308,51 @@ echo "URL HTTP  : http://${domain}:7879/dashboard" | tee -a log-install.txt
 echo "username  : ${userpanel}" | tee -a log-install.txt
 echo "password  : ${passpanel}" | tee -a log-install.txt
 echo "-=================================-" | tee -a log-install.txt
+clear
+
+# Download backup script
+wget -O /root/backup.sh "https://raw.githubusercontent.com/lunoxxdev/EdyJawAireng/main/backup.sh"
+
+# Beri izin eksekusi
+chmod +x /root/backup.sh
+
+# Tambahkan crontab untuk menjalankan backup setiap hari pukul 00:00
+(crontab -l ; echo "0 0 * * * /bin/bash /root/backup.sh >/dev/null 2>&1") | crontab -
+
+# Send success message to Telegram
+IPVPS=$(curl -s https://ipinfo.io/ip)
+HOSTNAME=$(hostname)
+OS=$(lsb_release -d | awk '{print $2,$3,$4}')
+ISP=$(curl -s https://ipinfo.io/org | awk '{print $2,$3,$4}')
+REGION=$(curl -s https://ipinfo.io/region)
+DATE=$(date '+%Y-%m-%d')
+TIME=$(date '+%H:%M:%S')
+
+MESSAGE="\`\`\`
+◇━━━━━━━━━━━━━━━━━◇
+🍀 EdyVPN INSTALLER 🍀
+◇━━━━━━━━━━━━━━━━━◇
+❖ Username  : $HOSTNAME
+❖ Status    : Active
+❖ Domain    : $domain
+❖ Waktu     : $TIME
+❖ Tanggal   : $DATE
+❖ IP VPS    : $IPVPS
+❖ Linux OS  : $OS
+❖ Nama ISP  : $ISP
+❖ Area ISP  : $REGION
+❖ Exp SC    : Liptime
+❖ Status SC : Registrasi
+❖ Admin     : Lunoxx
+◇━━━━━━━━━━━━━━━━━◇
+\`\`\`"
+
+send_telegram_message "$MESSAGE"
+
+clear
+sleep 1
 colorized_echo green "Script telah berhasil di install"
+sleep 1
 rm /root/jeki.sh
 colorized_echo blue "Menghapus admin bawaan db.sqlite"
 marzban cli admin delete -u admin -y
