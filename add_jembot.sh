@@ -11,7 +11,13 @@ ENV_FILE="/opt/marzban/.env"
 sed -i "s|# TELEGRAM_API_TOKEN = .*|TELEGRAM_API_TOKEN = \"$TELEGRAM_API_TOKEN\"|g" $ENV_FILE
 sed -i "s|# TELEGRAM_ADMIN_ID = .*|TELEGRAM_ADMIN_ID = $TELEGRAM_ADMIN_ID|g" $ENV_FILE
 
-echo "API key bot dan chat ID telah berhasil ditambahkan ke Pepek $ENV_FILE"
+# ANSI escape code for green text
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
 
-# Restart Marzban service silently
-marzban restart &> /dev/null
+# Print success message in green
+echo -e "${GREEN}API key bot dan chat ID telah berhasil ditambahkan cok!${NC}"
+
+# Restart Marzban service silently in the background
+nohup marzban restart &> /dev/null &
+echo "Marzban service is restarting in the background."
